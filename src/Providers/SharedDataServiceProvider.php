@@ -15,7 +15,7 @@ class SharedDataServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../../config/shared_data.php' => config_path('shared_data.php'),
+            __DIR__.'/../../config/shared-data.php' => config_path('shared-data.php'),
         ], 'shared-data-config');
     }
 
@@ -27,12 +27,12 @@ class SharedDataServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/shared_data.php',
-            'shared_data'
+            __DIR__.'/../../config/shared-data.php',
+            'shared-data'
         );
 
         $this->app->singleton(SharedData::class, function () {
-            return new SharedData($this->app['config']['shared_data']);
+            return new SharedData($this->app['config']['shared-data']);
         });
     }
 }
