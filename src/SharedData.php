@@ -62,4 +62,9 @@ class SharedData implements Renderable, Jsonable
     {
         return '<script>window[\''.$this->getNamespace().'\'] = '.$this->toJson().';</script>';
     }
+
+    public function __toString()
+    {
+        return $this->render();
+    }
 }
