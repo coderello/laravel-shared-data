@@ -12,6 +12,47 @@ composer require coderello/laravel-shared-data
 
 The package will automatically register itself.
 
+## Usage
+
+First of all, you need to include this line before all of your `<script>` tags in you base blade layout in order to make the shared data available in all of those scripts.
+
+```php
+{!! shared()->render() !!}
+```
+
+Now you can share any data you want from any part or your application (middleware, controller, service provider etc.)
+
+```php
+use Coderello\SharedData\Facades\SharedData;
+
+public function index()
+{
+    SharedData::put([
+        'user' => auth()->user(),
+        'post' => Post::first(),
+        'username' => '@hivokas',
+    ]);
+    
+    // or
+    
+    share([
+        'user' => auth()->user(),
+        'post' => Post::first(),
+        'username' => '@hivokas',
+    ]);
+}
+```
+
+And get this data on the frontend side from `window.sharedData` (use can modify the namespace in the config file).
+
+![Shared Data in JS](http://i.imgur.com/v21h7NN.png)
+
+
+
+
+
+
+
 ## Testing
 
 You can run the tests with:
