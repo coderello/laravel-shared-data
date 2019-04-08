@@ -1,6 +1,6 @@
-# Laravel Shared Data
+<p align="center"><img alt="Laravel Shared Data" src="https://i.imgur.com/pzLYh8k.png" width="380"></p>
 
-**Laravel Shared Data** provides an easy way to share the data from your backend to the JavaScript.
+<p align="center"><b>Laravel Shared Data</b> provides an easy way to share the data from your backend to the JavaScript.</p>
 
 ## Installation
 
@@ -46,12 +46,6 @@ public function index()
 And get this data on the frontend side from `window.sharedData` (use can modify the namespace in the config file).
 
 ![Shared Data in JS](http://i.imgur.com/v21h7NN.png)
-
-
-
-
-
-
 
 ## Testing
 
