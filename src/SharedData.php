@@ -39,9 +39,9 @@ class SharedData implements Renderable, Jsonable
     {
         if (is_null($key)) {
             return $this->data;
-        } else {
-            return Arr::get($this->data, $key);
         }
+
+        return Arr::get($this->data, $key);
     }
 
     protected function getNamespace()

@@ -2,6 +2,10 @@
 
 <p align="center"><b>Laravel Shared Data</b> provides an easy way to share the data from your backend to the JavaScript.</p>
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/coderello/laravel-shared-data.svg)](https://packagist.org/packages/coderello/laravel-shared-data)
+[![Total Downloads](https://img.shields.io/packagist/dt/coderello/laravel-shared-data.svg)](https://packagist.org/packages/coderello/laravel-shared-data)
+[![Build Status](https://travis-ci.org/coderello/laravel-shared-data.svg?branch=master)](https://travis-ci.org/coderello/laravel-shared-data)
+
 ## Installation
 
 You can install this package via composer using this command:
