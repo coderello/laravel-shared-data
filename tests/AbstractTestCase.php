@@ -2,10 +2,10 @@
 
 namespace Coderello\SharedData\Tests;
 
+use Orchestra\Testbench\TestCase;
 use Coderello\SharedData\Providers\SharedDataServiceProvider;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
-abstract class AbstractTestCase extends OrchestraTestCase
+abstract class AbstractTestCase extends TestCase
 {
     protected function getPackageProviders($app)
     {
