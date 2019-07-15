@@ -97,4 +97,20 @@ class SharedDataTest extends AbstractTestCase
 
         $this->assertSame($this->sharedData->render(), (string) $this->sharedData);
     }
+
+    /**
+     * @depends testRender
+     */
+    public function testStandaloneInstance()
+    {
+        $sharedData = (new SharedData())
+            ->setJsNamespace('testData');
+
+        $this->assertSame('testData', $sharedData->getJsNamespace());
+
+        $html = $sharedData->render();
+        $expectedHtml = '<script>window[\'testData\'] = [];</script>';
+
+        $this->assertSame($expectedHtml, $html);
+    }
 }

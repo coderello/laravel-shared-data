@@ -2,20 +2,22 @@
 
 namespace Coderello\SharedData;
 
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Arr;
-use LogicException;
 
 class SharedData implements Renderable, Jsonable
 {
     protected $data = [];
 
-    protected $config = [];
+    private $jsNamespace = 'sharedData';
 
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
-        $this->config = $config;
+        if (isset($config['js_namespace'])) {
+            $this->setJsNamespace($config['js_namespace']);
+        }
     }
 
     public function put($key, $value = null)
@@ -29,7 +31,7 @@ class SharedData implements Renderable, Jsonable
         } elseif (is_object($key)) {
             $this->put(get_object_vars($key));
         } else {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('Unsupported data key type: '.gettype($key));
         }
 
         return $this;
@@ -44,26 +46,29 @@ class SharedData implements Renderable, Jsonable
         return Arr::get($this->data, $key);
     }
 
-    protected function getNamespace()
+    public function getJsNamespace(): string
     {
-        if (! ($namespace = Arr::get($this->config, 'js_namespace'))) {
-            throw new LogicException('JavaScript namespace should be specified in the config file.');
-        }
-
-        return $namespace;
+        return $this->jsNamespace;
     }
 
-    public function toJson($options = 0)
+    public function setJsNamespace(string $jsNamespace): self
+    {
+        $this->jsNamespace = $jsNamespace;
+
+        return $this;
+    }
+
+    public function toJson($options = 0): string
     {
         return json_encode($this->get(), $options);
     }
 
-    public function render()
+    public function render(): string
     {
-        return '<script>window[\''.$this->getNamespace().'\'] = '.$this->toJson().';</script>';
+        return '<script>window[\''.$this->getJsNamespace().'\'] = '.$this->toJson().';</script>';
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
