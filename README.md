@@ -49,7 +49,7 @@ public function index()
 
 And get this data on the frontend side from `window.sharedData` (use can modify the namespace in the config file).
 
-![Shared Data in JS](http://i.imgur.com/v21h7NN.png)
+![Shared Data in JavaScript](http://i.imgur.com/v21h7NN.png)
 
 ## Testing
 
