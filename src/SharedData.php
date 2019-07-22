@@ -2,18 +2,25 @@
 
 namespace Coderello\SharedData;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
+use JsonSerializable;
 
 class SharedData implements Renderable, Jsonable
 {
-    protected $data = [];
+    private $data = [];
 
     private $jsNamespace = 'sharedData';
 
     public function __construct(array $config = [])
+    {
+        $this->hydrateConfig($config);
+    }
+
+    private function hydrateConfig(array $config)
     {
         if (isset($config['js_namespace'])) {
             $this->setJsNamespace($config['js_namespace']);
@@ -28,10 +35,14 @@ class SharedData implements Renderable, Jsonable
             foreach ($key as $nestedKey => $nestedValue) {
                 $this->put($nestedKey, $nestedValue);
             }
+        } elseif ($key instanceof JsonSerializable) {
+            $this->put($key->jsonSerialize());
+        } elseif ($key instanceof Arrayable) {
+            $this->put($key->toArray());
         } elseif (is_object($key)) {
             $this->put(get_object_vars($key));
         } else {
-            throw new InvalidArgumentException('Unsupported data key type: '.gettype($key));
+            throw new InvalidArgumentException('Key type ['.gettype($key).'] is not supported.');
         }
 
         return $this;

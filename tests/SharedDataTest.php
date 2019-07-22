@@ -3,6 +3,8 @@
 namespace Coderello\SharedData\Tests;
 
 use Coderello\SharedData\SharedData;
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
 
 class SharedDataTest extends AbstractTestCase
 {
@@ -39,6 +41,28 @@ class SharedDataTest extends AbstractTestCase
         $this->sharedData->put($object);
         $this->assertSame('object-scalar', $this->sharedData->get('objectScalar'));
         $this->assertSame(['nested' => 'object-scalar'], $this->sharedData->get('objectArray'));
+
+        $arrayable = new class implements Arrayable {
+            public function toArray()
+            {
+                return [
+                    'arrayable-key' => 'arrayable-value',
+                ];
+            }
+        };
+        $this->sharedData->put($arrayable);
+        $this->assertSame('arrayable-value', $this->sharedData->get('arrayable-key'));
+
+        $jsonSerializable = new class implements JsonSerializable {
+            public function jsonSerialize()
+            {
+                return [
+                    'json-serializable-key' => 'json-serializable-value',
+                ];
+            }
+        };
+        $this->sharedData->put($jsonSerializable);
+        $this->assertSame('json-serializable-value', $this->sharedData->get('json-serializable-key'));
     }
 
     /**
