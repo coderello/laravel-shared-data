@@ -2,6 +2,8 @@
 
 namespace Coderello\SharedData;
 
+use ArrayAccess;
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
@@ -9,11 +11,16 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
 use JsonSerializable;
 
-class SharedData implements Renderable, Jsonable
+class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, ArrayAccess
 {
+    /** @var array */
     private $data = [];
 
+    /** @var string */
     private $jsNamespace = 'sharedData';
+
+    /** @var Closure[]|array */
+    private $delayedClosures = [];
 
     public function __construct(array $config = [])
     {
@@ -25,6 +32,17 @@ class SharedData implements Renderable, Jsonable
         if (isset($config['js_namespace'])) {
             $this->setJsNamespace($config['js_namespace']);
         }
+    }
+
+    private function unpackDelayedClosures(): self
+    {
+        foreach ($this->delayedClosures as $key => $delayedClosure) {
+            $this->put($delayedClosure());
+        }
+
+        $this->delayedClosures = [];
+
+        return $this;
     }
 
     public function put($key, $value = null)
@@ -39,6 +57,8 @@ class SharedData implements Renderable, Jsonable
             $this->put($key->jsonSerialize());
         } elseif ($key instanceof Arrayable) {
             $this->put($key->toArray());
+        } elseif ($key instanceof Closure) {
+            $this->delayedClosures[] = $key;
         } elseif (is_object($key)) {
             $this->put(get_object_vars($key));
         } else {
@@ -50,11 +70,26 @@ class SharedData implements Renderable, Jsonable
 
     public function get($key = null)
     {
+        $this->unpackDelayedClosures();
+
         if (is_null($key)) {
             return $this->data;
         }
 
         return Arr::get($this->data, $key);
+    }
+
+    public function forget($key = null): self
+    {
+        $this->unpackDelayedClosures();
+
+        if (is_null($key)) {
+            $this->data = [];
+        } else {
+            Arr::forget($this->data, $key);
+        }
+
+        return $this;
     }
 
     public function getJsNamespace(): string
@@ -82,5 +117,35 @@ class SharedData implements Renderable, Jsonable
     public function __toString(): string
     {
         return $this->render();
+    }
+
+    public function toArray(): array
+    {
+        return $this->get();
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->get();
+    }
+
+    public function offsetExists($offset): bool
+    {
+        return Arr::has($this->data, $offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        $this->put($offset, $value);
+    }
+
+    public function offsetUnset($offset): void
+    {
+        $this->forget($offset);
     }
 }
