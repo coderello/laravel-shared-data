@@ -87,6 +87,18 @@ class SharedDataTest extends AbstractTestCase
 
         $this->assertSame('bar', $this->sharedData->get('lazy'));
 
+        // Closure (lazy) with key
+
+        $this->lazy = 'foo';
+
+        $this->sharedData->put('lazy-with-key', function () {
+            return $this->lazy;
+        });
+
+        $this->lazy = 'bar';
+
+        $this->assertSame('bar', $this->sharedData->get('lazy-with-key'));
+
         // object
 
         $object = new stdClass;

@@ -22,6 +22,9 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
     /** @var Closure[]|array */
     private $delayedClosures = [];
 
+    /** @var Closure[]|array */
+    private $delayedClosuresWithKeys = [];
+
     public function __construct(array $config = [])
     {
         $this->hydrateConfig($config);
@@ -36,18 +39,26 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
 
     private function unpackDelayedClosures(): self
     {
-        foreach ($this->delayedClosures as $key => $delayedClosure) {
+        foreach ($this->delayedClosures as $delayedClosure) {
             $this->put($delayedClosure());
         }
 
         $this->delayedClosures = [];
+
+        foreach ($this->delayedClosuresWithKeys as $key => $delayedClosure) {
+            $this->put($key, $delayedClosure());
+        }
+
+        $this->delayedClosuresWithKeys = [];
 
         return $this;
     }
 
     public function put($key, $value = null)
     {
-        if (is_scalar($key)) {
+        if (is_scalar($key) && $value instanceof Closure) {
+            $this->delayedClosuresWithKeys[$key] = $value;
+        } elseif (is_scalar($key)) {
             Arr::set($this->data, $key, $value);
         } elseif (is_iterable($key)) {
             foreach ($key as $nestedKey => $nestedValue) {
