@@ -19,6 +19,9 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
     /** @var string */
     private $jsNamespace = 'sharedData';
 
+    /** @var callable|null */
+    private $keyTransformer;
+
     /** @var Closure[]|array */
     private $delayedClosures = [];
 
@@ -54,29 +57,69 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         return $this;
     }
 
-    public function put($key, $value = null)
+    public function put($key, $value = null): self
     {
         if (is_scalar($key) && $value instanceof Closure) {
             $this->delayedClosuresWithKeys[$key] = $value;
-        } elseif (is_scalar($key)) {
-            Arr::set($this->data, $key, $value);
-        } elseif (is_iterable($key)) {
-            foreach ($key as $nestedKey => $nestedValue) {
-                $this->put($nestedKey, $nestedValue);
-            }
-        } elseif ($key instanceof JsonSerializable) {
-            $this->put($key->jsonSerialize());
-        } elseif ($key instanceof Arrayable) {
-            $this->put($key->toArray());
         } elseif ($key instanceof Closure) {
             $this->delayedClosures[] = $key;
-        } elseif (is_object($key)) {
-            $this->put(get_object_vars($key));
         } else {
-            throw new InvalidArgumentException('Key type ['.gettype($key).'] is not supported.');
+            $transformedData = $this->transformDeeply(is_scalar($key) ? [$key => $value] : $key);
+
+            foreach ($transformedData as $transformedKey => $transformedValue) {
+                Arr::set($this->data, $transformedKey, $transformedValue);
+            }
         }
 
         return $this;
+    }
+
+    private function transformDeeply($input): array
+    {
+        if (is_iterable($input)) {
+            $output = [];
+
+            foreach ($input as $key => $value) {
+                $output[$this->transformKey($key)] = is_scalar($value) ? $value : $this->transformDeeply($value);
+            }
+
+            return $output;
+        } elseif ($input instanceof JsonSerializable) {
+            return $this->transformDeeply($input->jsonSerialize());
+        } elseif ($input instanceof Arrayable) {
+            return $this->transformDeeply($input->toArray());
+        } elseif (is_object($input)) {
+            return $this->transformDeeply(get_object_vars($input));
+        }
+
+        throw new InvalidArgumentException('Data type ['.gettype($input).'] is not supported.');
+    }
+
+    public function setKeyTransformer(callable $keyTransformer): self
+    {
+        $this->keyTransformer = $keyTransformer;
+
+        return $this;
+    }
+
+    public function forgetKeyTransformer(): self
+    {
+        $this->keyTransformer = null;
+
+        return $this;
+    }
+
+    private function transformKey($key)
+    {
+        if (! is_scalar($key)) {
+            throw new InvalidArgumentException('Key type ['.gettype($key).'] is not supported.');
+        }
+
+        if ($this->keyTransformer) {
+            return ($this->keyTransformer)($key);
+        }
+
+        return $key;
     }
 
     public function get($key = null)

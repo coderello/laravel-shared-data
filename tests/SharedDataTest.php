@@ -4,6 +4,7 @@ namespace Coderello\SharedData\Tests;
 
 use Coderello\SharedData\SharedData;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Str;
 use JsonSerializable;
 use stdClass;
 
@@ -262,5 +263,112 @@ class SharedDataTest extends AbstractTestCase
         $this->sharedData->forget();
 
         $this->assertSame([], $this->sharedData->get());
+    }
+
+    public function testKeyTransformer()
+    {
+        $this->sharedData->setKeyTransformer(function ($key) {
+            return Str::camel($key);
+        });
+
+        $this->sharedData->put('foo_bar', 'baz');
+
+        $this->assertSame('baz', $this->sharedData->get('fooBar'));
+
+        $this->sharedData->setKeyTransformer(new class {
+            public function __invoke($key)
+            {
+                return Str::studly($key);
+            }
+        });
+
+        $this->sharedData->put('foo_baz', 'bar');
+
+        $this->assertSame('bar', $this->sharedData->get('FooBaz'));
+
+        $this->sharedData->forgetKeyTransformer();
+
+        $this->sharedData->put('bar_baz', 'foo');
+
+        $this->assertSame('foo', $this->sharedData->get('bar_baz'));
+    }
+
+    public function testKeyTransformerWithDeepData()
+    {
+        $this->sharedData->setKeyTransformer(function ($key) {
+            return Str::camel($key);
+        });
+
+        $this->sharedData->put('a_b', ['b_c' => 'c_d']);
+
+        $this->sharedData->put('d_e', new class implements Arrayable {
+            public function toArray()
+            {
+                return ['e_f' => 'f_g'];
+            }
+        });
+
+        $std = new stdClass;
+
+        $std->g_h = 'h_i';
+
+        $std->i_j = ['j_k' => 'k_l'];
+
+        $this->sharedData->put($std);
+
+        $this->sharedData->put(new class implements JsonSerializable {
+            public function jsonSerialize()
+            {
+                $std = new stdClass;
+
+                $std->l_m = 'm_n';
+
+                return [
+                    'n_o' => $std,
+                    'o_p' => [
+                        'p_q' => [
+                            'q_r' => new class implements Arrayable {
+                                public function toArray()
+                                {
+                                    return [
+                                        'r_s' => 's_t',
+                                    ];
+                                }
+                            },
+                        ],
+                    ],
+                ];
+            }
+        });
+
+        $this->sharedData->put(function () {
+            return [
+                't_u' => 'u_v',
+            ];
+        });
+
+        $this->assertSame([
+            'aB' => [
+                'bC' => 'c_d',
+            ],
+            'dE' => [
+                'eF' => 'f_g',
+            ],
+            'gH' => 'h_i',
+            'iJ' => [
+                'jK' => 'k_l',
+            ],
+            'nO' => [
+                'lM' => 'm_n',
+            ],
+            'oP' => [
+                'pQ' => [
+                    'qR' => [
+                        'rS' => 's_t',
+                    ],
+                ],
+            ],
+            'tU' => 'u_v',
+        ], $this->sharedData->get());
     }
 }
