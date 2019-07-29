@@ -1,0 +1,6 @@
+site:
+  show: true
+  title: 'Laravel Shared Data'
+  description: 'An easy way to share the data from your backend to the JavaScript.'
+  package_repository: 'packagist'
+  package_name: 'coderello/laravel-shared-data'
