@@ -64,62 +64,35 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         } elseif ($key instanceof Closure) {
             $this->delayedClosures[] = $key;
         } else {
-            $transformedData = $this->transformDeeply(is_scalar($key) ? [$key => $value] : $key);
+            $deeplyConvertedData = $this->convertToArrayDeeply(is_scalar($key) ? [$key => $value] : $key);
 
-            foreach ($transformedData as $transformedKey => $transformedValue) {
-                Arr::set($this->data, $transformedKey, $transformedValue);
+            foreach ($deeplyConvertedData as $convertedKey => $convertedValue) {
+                Arr::set($this->data, $convertedKey, $convertedValue);
             }
         }
 
         return $this;
     }
 
-    private function transformDeeply($input): array
+    private function convertToArrayDeeply($input): array
     {
         if (is_iterable($input)) {
             $output = [];
 
             foreach ($input as $key => $value) {
-                $output[$this->transformKey($key)] = is_scalar($value) ? $value : $this->transformDeeply($value);
+                $output[$key] = is_scalar($value) ? $value : $this->convertToArrayDeeply($value);
             }
 
             return $output;
         } elseif ($input instanceof JsonSerializable) {
-            return $this->transformDeeply($input->jsonSerialize());
+            return $this->convertToArrayDeeply($input->jsonSerialize());
         } elseif ($input instanceof Arrayable) {
-            return $this->transformDeeply($input->toArray());
+            return $this->convertToArrayDeeply($input->toArray());
         } elseif (is_object($input)) {
-            return $this->transformDeeply(get_object_vars($input));
+            return $this->convertToArrayDeeply(get_object_vars($input));
         }
 
         throw new InvalidArgumentException('Data type ['.gettype($input).'] is not supported.');
-    }
-
-    public function setKeyTransformer(callable $keyTransformer): self
-    {
-        $this->keyTransformer = $keyTransformer;
-
-        return $this;
-    }
-
-    public function forgetKeyTransformer(): self
-    {
-        $this->keyTransformer = null;
-
-        return $this;
-    }
-
-    private function transformKey($key)
-    {
-        if (! is_scalar($key)) {
-            throw new InvalidArgumentException('Key type ['.gettype($key).'] is not supported.');
-        }
-
-        if ($this->keyTransformer) {
-            return ($this->keyTransformer)($key);
-        }
-
-        return $key;
     }
 
     public function get($key = null)

@@ -265,40 +265,8 @@ class SharedDataTest extends AbstractTestCase
         $this->assertSame([], $this->sharedData->get());
     }
 
-    public function testKeyTransformer()
+    public function testDeepDataConversionToArray()
     {
-        $this->sharedData->setKeyTransformer(function ($key) {
-            return Str::camel($key);
-        });
-
-        $this->sharedData->put('foo_bar', 'baz');
-
-        $this->assertSame('baz', $this->sharedData->get('fooBar'));
-
-        $this->sharedData->setKeyTransformer(new class {
-            public function __invoke($key)
-            {
-                return Str::studly($key);
-            }
-        });
-
-        $this->sharedData->put('foo_baz', 'bar');
-
-        $this->assertSame('bar', $this->sharedData->get('FooBaz'));
-
-        $this->sharedData->forgetKeyTransformer();
-
-        $this->sharedData->put('bar_baz', 'foo');
-
-        $this->assertSame('foo', $this->sharedData->get('bar_baz'));
-    }
-
-    public function testKeyTransformerWithDeepData()
-    {
-        $this->sharedData->setKeyTransformer(function ($key) {
-            return Str::camel($key);
-        });
-
         $this->sharedData->put('a_b', ['b_c' => 'c_d']);
 
         $this->sharedData->put('d_e', new class implements Arrayable {
@@ -348,27 +316,27 @@ class SharedDataTest extends AbstractTestCase
         });
 
         $this->assertSame([
-            'aB' => [
-                'bC' => 'c_d',
+            'a_b' => [
+                'b_c' => 'c_d',
             ],
-            'dE' => [
-                'eF' => 'f_g',
+            'd_e' => [
+                'e_f' => 'f_g',
             ],
-            'gH' => 'h_i',
-            'iJ' => [
-                'jK' => 'k_l',
+            'g_h' => 'h_i',
+            'i_j' => [
+                'j_k' => 'k_l',
             ],
-            'nO' => [
-                'lM' => 'm_n',
+            'n_o' => [
+                'l_m' => 'm_n',
             ],
-            'oP' => [
-                'pQ' => [
-                    'qR' => [
-                        'rS' => 's_t',
+            'o_p' => [
+                'p_q' => [
+                    'q_r' => [
+                        'r_s' => 's_t',
                     ],
                 ],
             ],
-            'tU' => 'u_v',
+            't_u' => 'u_v',
         ], $this->sharedData->get());
     }
 }
