@@ -1,4 +1,4 @@
-<p align="center"><img alt="Laravel Shared Data" src="https://i.imgur.com/pzLYh8k.png" width="380"></p>
+<p align="center"><img alt="Laravel Shared Data" src="https://coderello.com/images/packages/laravel-shared-data.png" width="380"></p>
 
 <p align="center"><b>Laravel Shared Data</b> provides an easy way to share the data from your backend to the JavaScript.</p>
 
