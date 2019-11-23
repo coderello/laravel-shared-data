@@ -3,6 +3,7 @@
 namespace Coderello\SharedData\Providers;
 
 use Coderello\SharedData\SharedData;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -15,6 +16,10 @@ class SharedDataServiceProvider extends ServiceProvider implements DeferrablePro
      */
     public function boot()
     {
+        Blade::directive('shared', function () {
+            return '<?php echo shared()->render(); ?>';
+        });
+
         if (! $this->app->runningInConsole()) {
             return;
         }

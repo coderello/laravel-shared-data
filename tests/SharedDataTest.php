@@ -4,6 +4,8 @@ namespace Coderello\SharedData\Tests;
 
 use Coderello\SharedData\SharedData;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use JsonSerializable;
 use stdClass;
 
@@ -262,5 +264,13 @@ class SharedDataTest extends AbstractTestCase
         $this->sharedData->forget();
 
         $this->assertSame([], $this->sharedData->get());
+    }
+
+    public function testDirective()
+    {
+        $this->assertEquals(
+            shared()->render(),
+            view('shared')->render()
+        );
     }
 }
