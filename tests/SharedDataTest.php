@@ -4,8 +4,6 @@ namespace Coderello\SharedData\Tests;
 
 use Coderello\SharedData\SharedData;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
 use JsonSerializable;
 use stdClass;
 

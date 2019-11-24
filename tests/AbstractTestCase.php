@@ -2,7 +2,6 @@
 
 namespace Coderello\SharedData\Tests;
 
-use Illuminate\Support\Facades\View;
 use Orchestra\Testbench\TestCase;
 use Coderello\SharedData\Providers\SharedDataServiceProvider;
 
