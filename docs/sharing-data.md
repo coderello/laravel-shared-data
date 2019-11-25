@@ -39,4 +39,4 @@ share([
 
 And get this data on the frontend side from `window.sharedData` (use can modify the namespace in the config file).
 
-![window.sharedData]({{assets}}/window-shared-data.png)
+![console.log(window.sharedData);]({{assets}}/window-shared-data.png)
