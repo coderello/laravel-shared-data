@@ -263,4 +263,12 @@ class SharedDataTest extends AbstractTestCase
 
         $this->assertSame([], $this->sharedData->get());
     }
+
+    public function testDirective()
+    {
+        $this->assertEquals(
+            shared()->render(),
+            view('shared')->render()
+        );
+    }
 }
