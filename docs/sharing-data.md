@@ -5,13 +5,7 @@ weight: 400
 featherIcon: package
 ---
 
-First of all, you need to include this line before all of your `<script>` tags in you base blade layout in order to make the shared data available in all of those scripts.
-
-```blade
-@shared
-```
-
-Now you can share any data you want from any part or your application (middleware, controller, service provider etc.)
+You can share any data you want from any part or your application (middleware, controller, service provider etc.)
 
 ```php
 use Coderello\SharedData\Facades\SharedData;
