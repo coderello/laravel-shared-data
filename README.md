@@ -21,7 +21,7 @@ The package will automatically register itself.
 First of all, you need to include this line before all of your `<script>` tags in you base blade layout in order to make the shared data available in all of those scripts.
 
 ```php
-{!! shared()->render() !!}
+@shared
 ```
 
 Now you can share any data you want from any part or your application (middleware, controller, service provider etc.)
