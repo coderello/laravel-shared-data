@@ -1,7 +1,7 @@
 ---
 title: Sharing data
 section: Getting Started
-weight: 400
+weight: 900
 featherIcon: package
 ---
 
