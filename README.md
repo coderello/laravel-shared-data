@@ -8,7 +8,7 @@
 
 ## 📖 Documentation
 
-You'll find the documentation **[here](https://coderello.com/docs/laravel-shared-data/1.0/installation)**.
+For installation instructions and usage details, please take a look at the **[official documentation](https://coderello.com/docs/laravel-shared-data/1.0/installation)**.
 
 ## 🚀 Quick start
 
