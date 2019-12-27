@@ -1,72 +1,38 @@
-<p align="center"><img alt="Laravel Shared Data" src="https://coderello.com/images/packages/laravel-shared-data.png" width="380"></p>
+<p align="center">
+  <img src="https://coderello.com/images/packages/laravel-shared-data.png" width="380" alt="Laravel Shared Data" />
+</p>
 
-<p align="center"><b>Laravel Shared Data</b> provides an easy way to share the data from your backend to the JavaScript.</p>
+## ✨ Introduction
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/coderello/laravel-shared-data.svg)](https://packagist.org/packages/coderello/laravel-shared-data)
-[![Total Downloads](https://img.shields.io/packagist/dt/coderello/laravel-shared-data.svg)](https://packagist.org/packages/coderello/laravel-shared-data)
-[![Build Status](https://travis-ci.org/coderello/laravel-shared-data.svg?branch=master)](https://travis-ci.org/coderello/laravel-shared-data)
+**Laravel Shared Data** provides an easy way to share the data from your backend to the JavaScript.
 
-## Installation
+## 📖 Documentation
 
-You can install this package via composer using this command:
+You'll find the documentation **[here](https://coderello.com/docs/laravel-shared-data/1.0/installation)**.
 
-```bash
-composer require coderello/laravel-shared-data
-```
+## 🚀 Quick start
 
-The package will automatically register itself.
+-   Install the package:
+    ```bash
+    composer require coderello/laravel-shared-data
+    ```
 
-## Usage
+-   Include the `@shared` directive to your base Blade layout before all scripts.
 
-First of all, you need to include this line before all of your `<script>` tags in you base blade layout in order to make the shared data available in all of those scripts.
-
-```php
-@shared
-```
-
-Now you can share any data you want from any part or your application (middleware, controller, service provider etc.)
-
-```php
-use Coderello\SharedData\Facades\SharedData;
-
-public function index()
-{
-    SharedData::put([
-        'user' => auth()->user(),
-        'post' => Post::first(),
-        'username' => '@hivokas',
-    ]);
+-   Share the data:
+    ```bash
+    share(['user' => $user]);
+    ```
     
-    // or
-    
-    share([
-        'user' => auth()->user(),
-        'post' => Post::first(),
-        'username' => '@hivokas',
-    ]);
-}
-```
+-   Access the variable from the JavaScript:
+    ```bash
+    let user = window.sharedData.user;
+    ```
 
-And get this data on the frontend side from `window.sharedData` (use can modify the namespace in the config file).
+## 💖 Support the development
 
-![Shared Data in JS](http://i.imgur.com/v21h7NN.png)
+**Do you like this project? Support it by donating:**
 
-## Testing
+- Patreon: [Donate](https://patreon.com/coderello)
 
-You can run the tests with:
-
-```bash
-composer test
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+**Laravel Shared Data** is open-sourced software licensed under the [MIT license](LICENSE.md).
