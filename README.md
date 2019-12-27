@@ -17,7 +17,7 @@ You'll find the documentation **[here](https://coderello.com/docs/laravel-shared
     composer require coderello/laravel-shared-data
     ```
 
--   Include the `@shared` directive to your base Blade layout before all scripts.
+-   Include the `@shared` directive into your blade layout before all scripts.
 
 -   Share the data:
     ```bash
@@ -26,7 +26,7 @@ You'll find the documentation **[here](https://coderello.com/docs/laravel-shared
     
 -   Access the variable from the JavaScript:
     ```bash
-    let user = window.sharedData.user;
+    const user = window.sharedData.user;
     ```
 
 ## 💖 Support the development
