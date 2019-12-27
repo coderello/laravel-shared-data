@@ -122,7 +122,7 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
 
     public function render(): string
     {
-        return '<script>window[\''.$this->getJsNamespace().'\'] = '.$this->toJson().';</script>';
+        return '<script>window[\''.$this->getJsNamespace().'\']='.$this->toJson().';window[\'sharedDataNamespace\']=\''.$this->getJsNamespace().'\';</script>';
     }
 
     public function __toString(): string

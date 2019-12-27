@@ -153,7 +153,7 @@ class SharedDataTest extends AbstractTestCase
 
         $html = $this->sharedData->render();
 
-        $expectedHtml = '<script>window[\'foo\'] = {"scalar":"scalar-value","array":{"nested":"value"}};</script>';
+        $expectedHtml = '<script>window[\'foo\']={"scalar":"scalar-value","array":{"nested":"value"}};window[\'sharedDataNamespace\']=\'foo\';</script>';
 
         $this->assertSame($expectedHtml, $html);
     }
