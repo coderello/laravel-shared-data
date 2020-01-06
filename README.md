@@ -19,7 +19,7 @@ For installation instructions and usage details, please take a look at the **[of
 
 -   Include the `@shared` directive into your blade layout before all scripts.
 
--   Share the data from the Laravel:
+-   Share the data from within Laravel:
     ```bash
     share(['user' => $user, 'title' => $title]);
     ```
@@ -27,7 +27,7 @@ For installation instructions and usage details, please take a look at the **[of
 -   Access the data from the JavaScript:
     ```bash
     const user = window.sharedData.user;
-    const title = winwdow.sharedData.title;
+    const title = window.sharedData.title;
     ```
 
 ## 💖 Support the development
