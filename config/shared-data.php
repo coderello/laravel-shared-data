@@ -14,4 +14,23 @@ return [
      */
     'js_namespace' => 'sharedData',
 
+    /*
+     * The settings for the JavaScript helper function that allows
+     * retrieving the shared data on the front-end side easily.
+     *
+     * Example: `shared('user.name')`
+     */
+    'js_helper' => [
+        /*
+         * Determines whether the JavaScript helper should be included
+         * alongside with the shared data.
+         */
+        'enabled' => true,
+
+        /*
+         * The function name for the JavaScript helper.
+         */
+        'name' => 'shared',
+    ],
+
 ];
