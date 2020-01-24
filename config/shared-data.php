@@ -18,7 +18,7 @@ return [
      * The settings for the JavaScript helper function that allows
      * retrieving the shared data on the front-end side easily.
      *
-     * Example: `shared('user.name')`
+     * Example: `shared('user.email')`
      */
     'js_helper' => [
         /*
