@@ -25,7 +25,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --colors=always"
+        "test": "./vendor/bin/phpunit --colors=always"
     },
     "extra": {
         "laravel": {
