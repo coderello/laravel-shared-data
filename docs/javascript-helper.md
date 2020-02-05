@@ -1,7 +1,7 @@
 ---
 title: JavaScript helper
 section: Getting Started
-weight: 600
+weight: 800
 featherIcon: coffee
 ---
 
