@@ -24,10 +24,16 @@ For installation instructions and usage details, please take a look at the **[of
     share(['user' => $user, 'title' => $title]);
     ```
     
--   Access the data from the JavaScript:
+-   Access the data from the JavaScript directly:
     ```bash
     const user = window.sharedData.user;
     const title = window.sharedData.title;
+    ```
+    
+-   Or using the built-it global helper:
+    ```bash
+    const user = shared('user');
+    const title = shared('title');
     ```
 
 ## 💖 Support the development

@@ -31,6 +31,18 @@ share([
 ]);
 ```
 
-And get this data on the frontend side from `window.sharedData` (use can modify the namespace in the config file).
+And get this data on the frontend side directly from `window.sharedData` (use can modify the namespace in the config file) like so:
+
+```js
+const user = window.sharedData.user;
+```
 
 ![console.log(window.sharedData);]({{assets}}/window-shared-data.png)
+
+Or using the global built-in helper:
+```js
+const user = shared('user');
+```
+
+> You can get more info on the global built-in helper on the [JavaScript helper]({{base}}/{{version}}/javascript-helper) page.
+
