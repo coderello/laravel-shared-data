@@ -19,6 +19,12 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
     /** @var string */
     private $jsNamespace = 'sharedData';
 
+    /** @var bool */
+    private $jsHelperEnabled = true;
+
+    /** @var string */
+    private $jsHelperName = 'shared';
+
     /** @var Closure[]|array */
     private $delayedClosures = [];
 
@@ -32,8 +38,16 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
 
     private function hydrateConfig(array $config)
     {
-        if (isset($config['js_namespace'])) {
-            $this->setJsNamespace($config['js_namespace']);
+        if (Arr::has($config, 'js_namespace')) {
+            $this->setJsNamespace(Arr::get($config, 'js_namespace'));
+        }
+
+        if (Arr::has($config, 'js_helper.enabled')) {
+            $this->setJsHelperEnabled(Arr::get($config, 'js_helper.enabled'));
+        }
+
+        if (Arr::has($config, 'js_helper.name')) {
+            $this->setJsHelperName(Arr::get($config, 'js_helper.name'));
         }
     }
 
@@ -115,6 +129,30 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         return $this;
     }
 
+    public function getJsHelperEnabled(): bool
+    {
+        return $this->jsHelperEnabled;
+    }
+
+    public function setJsHelperEnabled(bool $jsHelperEnabled): self
+    {
+        $this->jsHelperEnabled = $jsHelperEnabled;
+
+        return $this;
+    }
+
+    public function getJsHelperName(): string
+    {
+        return $this->jsHelperName;
+    }
+
+    public function setJsHelperName(string $jsHelperName): self
+    {
+        $this->jsHelperName = $jsHelperName;
+
+        return $this;
+    }
+
     public function toJson($options = 0): string
     {
         return json_encode($this->get(), $options);
@@ -122,7 +160,16 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
 
     public function render(): string
     {
-        return '<script>window[\''.$this->getJsNamespace().'\']='.$this->toJson().';window[\'sharedDataNamespace\']=\''.$this->getJsNamespace().'\';</script>';
+        return '<script>'
+            .'window["'.$this->getJsNamespace().'"]='.$this->toJson().';'
+            .'window["sharedDataNamespace"]="'.$this->getJsNamespace().'";'
+            .($this->getJsHelperEnabled() ? $this->getJsHelper().';' : '')
+            .'</script>';
+    }
+
+    public function getJsHelper(): string
+    {
+        return 'window["'.$this->getJsHelperName().'"]=function(e,n=null){return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)}';
     }
 
     public function __toString(): string

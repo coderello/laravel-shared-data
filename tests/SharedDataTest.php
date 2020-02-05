@@ -149,11 +149,15 @@ class SharedDataTest extends AbstractTestCase
             'array' => ['nested' => 'value'],
         ]);
 
-        $this->sharedData->setJsNamespace('foo');
+        $this->sharedData->setJsNamespace('customShareDataNamespace');
+
+        $this->sharedData->setJsHelperName('customSharedFunctionName');
+
+        $this->sharedData->setJsHelperEnabled(true);
 
         $html = $this->sharedData->render();
 
-        $expectedHtml = '<script>window[\'foo\']={"scalar":"scalar-value","array":{"nested":"value"}};window[\'sharedDataNamespace\']=\'foo\';</script>';
+        $expectedHtml = '<script>window["customShareDataNamespace"]={"scalar":"scalar-value","array":{"nested":"value"}};window["sharedDataNamespace"]="customShareDataNamespace";window["customSharedFunctionName"]=function(e,n=null){return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)};</script>';
 
         $this->assertSame($expectedHtml, $html);
     }
@@ -172,6 +176,31 @@ class SharedDataTest extends AbstractTestCase
         $this->sharedData->setJsNamespace('foo');
 
         $this->assertSame('foo', $this->sharedData->getJsNamespace());
+    }
+
+    public function testJsHelperName()
+    {
+        $this->assertSame('shared', $this->sharedData->getJsHelperName());
+
+        $this->sharedData->setJsHelperName('customShared');
+
+        $this->assertSame('customShared', $this->sharedData->getJsHelperName());
+    }
+
+    public function testJsHelperEnabled()
+    {
+        $this->assertSame(true, $this->sharedData->getJsHelperEnabled());
+
+        $this->sharedData->setJsHelperEnabled(false);
+
+        $this->assertSame(false, $this->sharedData->getJsHelperEnabled());
+    }
+
+    public function testJsHelper()
+    {
+        $this->sharedData->setJsHelperName('customSharedFunctionName');
+
+        $this->assertSame('window["customSharedFunctionName"]=function(e,n=null){return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)}', $this->sharedData->getJsHelper());
     }
 
     public function testToArray()
