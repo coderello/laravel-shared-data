@@ -1,7 +1,7 @@
 ---
 title: Contribution Guide
 section: Contributing
-weight: 100
+weight: 10000
 featherIcon: github
 ---
 
