@@ -38,7 +38,7 @@ class SharedDataServiceProvider extends ServiceProvider implements DeferrablePro
         );
 
         $this->app->singleton(SharedData::class, function () {
-            return new SharedData($this->app['config']['shared-data']);
+            return new SharedData($this->app['config']['shared-data'] ?? []);
         });
     }
 
