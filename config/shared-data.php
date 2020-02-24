@@ -33,4 +33,12 @@ return [
         'name' => 'shared',
     ],
 
+    /*
+     * Blade directive name.
+     *
+     * By default the Blade directive named 'shared'.
+     *
+     * It means that the shared data rendering will be available in view files via `@shared`
+     */
+    'blade_directive' => 'shared',
 ];
