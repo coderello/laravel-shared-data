@@ -305,15 +305,13 @@ class SharedDataTest extends AbstractTestCase
     /**
      * @depends testBladeDirective
      */
-    public function testBladeDirectiveCustom()
+    public function testBladeDirectiveWithCustomName()
     {
-        $this->app->make('config')->set('shared-data.blade_directive', 'shared_custom');
-
-        $this->app->register(SharedDataServiceProvider::class);
+        $this->app['config']['shared-data.blade_directive.name'] = 'shared_custom';
 
         $this->assertEquals(
             shared()->render(),
-            view('shared-custom')->render()
+            view('shared_custom')->render()
         );
     }
 }
