@@ -158,7 +158,7 @@ class SharedDataTest extends AbstractTestCase
 
         $html = $this->sharedData->render();
 
-        $expectedHtml = '<script>window["customShareDataNamespace"]={"scalar":"scalar-value","array":{"nested":"value"}};window["sharedDataNamespace"]="customShareDataNamespace";window["customSharedFunctionName"]=function(e,n=null){return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)};</script>';
+        $expectedHtml = '<script>window["customShareDataNamespace"]={"scalar":"scalar-value","array":{"nested":"value"}};window["sharedDataNamespace"]="customShareDataNamespace";window["customSharedFunctionName"]=function(e){var n=void 0!==arguments[1]?arguments[1]:null;return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)};</script>';
 
         $this->assertSame($expectedHtml, $html);
     }
@@ -201,7 +201,7 @@ class SharedDataTest extends AbstractTestCase
     {
         $this->sharedData->setJsHelperName('customSharedFunctionName');
 
-        $this->assertSame('window["customSharedFunctionName"]=function(e,n=null){return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)}', $this->sharedData->getJsHelper());
+        $this->assertSame('window["customSharedFunctionName"]=function(e){var n=void 0!==arguments[1]?arguments[1]:null;return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)}', $this->sharedData->getJsHelper());
     }
 
     public function testToArray()
