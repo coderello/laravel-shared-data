@@ -169,7 +169,7 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
 
     public function getJsHelper(): string
     {
-        return 'window["'.$this->getJsHelperName().'"]=function(e,n=null){return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)}';
+        return 'window["'.$this->getJsHelperName().'"]=function(e){var n=void 0!==arguments[1]?arguments[1]:null;return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)}';
     }
 
     public function __toString(): string
