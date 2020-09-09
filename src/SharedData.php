@@ -5,10 +5,10 @@ namespace Coderello\SharedData;
 use ArrayAccess;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Arr;
-use InvalidArgumentException;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
 use JsonSerializable;
 
 class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, ArrayAccess
@@ -146,8 +146,7 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         return $this->jsHelperName;
     }
 
-    public function setJsHelperName
-    (string $jsHelperName)
+    public function setJsHelperName(string $jsHelperName)
     : self
     {
         $this->jsHelperName = $jsHelperName;

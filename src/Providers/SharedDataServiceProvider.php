@@ -3,9 +3,9 @@
 namespace Coderello\SharedData\Providers;
 
 use Coderello\SharedData\SharedData;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\Contracts\Support\DeferrableProvider;
 
 class SharedDataServiceProvider extends ServiceProvider implements DeferrableProvider
 {

@@ -2,7 +2,6 @@
 
 namespace Coderello\SharedData\Tests;
 
-use Coderello\SharedData\Providers\SharedDataServiceProvider;
 use Coderello\SharedData\SharedData;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;

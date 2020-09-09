@@ -2,8 +2,8 @@
 
 namespace Coderello\SharedData\Tests;
 
-use Orchestra\Testbench\TestCase;
 use Coderello\SharedData\Providers\SharedDataServiceProvider;
+use Orchestra\Testbench\TestCase;
 
 abstract class AbstractTestCase extends TestCase
 {
