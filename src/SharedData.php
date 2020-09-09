@@ -146,7 +146,9 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         return $this->jsHelperName;
     }
 
-    public function setJsHelperName(string $jsHelperName): self
+    public function setJsHelperName
+    (string $jsHelperName)
+    : self
     {
         $this->jsHelperName = $jsHelperName;
 
