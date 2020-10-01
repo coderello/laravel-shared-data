@@ -36,10 +36,6 @@ For installation instructions and usage details, please take a look at the **[of
     const title = shared('title');
     ```
 
-## 💖 Support the development
-
-**Do you like this project? Support it by donating:**
-
-- Patreon: [Donate](https://patreon.com/coderello)
+## 📖 License
 
 **Laravel Shared Data** is open-sourced software licensed under the [MIT license](LICENSE.md).
