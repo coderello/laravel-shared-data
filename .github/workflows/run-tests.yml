@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 7.3]
+        php: [8.0, 7.4, 7.3]
         laravel: [8.*, 7.*, 6.*]
         dependency-version: [prefer-lowest, prefer-stable]
         include:
@@ -34,7 +34,7 @@ jobs:
           key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
