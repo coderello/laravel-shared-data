@@ -38,7 +38,7 @@ class SharedDataServiceProvider extends ServiceProvider implements DeferrablePro
         });
 
         $this->app->extend('blade.compiler', function (BladeCompiler $bladeCompiler) {
-            $bladeCompiler->directive($this->app['config']['shared-data.blade_directive.name'], function () {
+            $bladeCompiler->directive($this->app['config']['shared-data.blade_directive.name'] ?? 'shared', function () {
                 return '<?php echo app(\\'.SharedData::class.'::class)->render(); ?>';
             });
 
