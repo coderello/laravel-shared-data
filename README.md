@@ -6,10 +6,6 @@
 
 **Laravel Shared Data** provides an easy way to share the data from your backend to the JavaScript.
 
-## 📖 Documentation
-
-For installation instructions and usage details, please take a look at the **[official documentation](https://coderello.com/docs/laravel-shared-data/3.0/installation)**.
-
 ## 🚀 Quick start
 
 -   Install the package:
