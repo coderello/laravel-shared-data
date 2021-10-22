@@ -162,6 +162,26 @@ class SharedDataTest extends AbstractTestCase
         $this->assertSame($expectedHtml, $html);
     }
 
+    public function testRenderWithAttributes()
+    {
+        $this->sharedData->put([
+            'scalar' => 'scalar-value',
+            'array' => ['nested' => 'value'],
+        ]);
+
+        $this->sharedData->setJsNamespace('customShareDataNamespace');
+
+        $this->sharedData->setJsHelperName('customSharedFunctionName');
+
+        $this->sharedData->setJsHelperEnabled(true);
+
+        $html = $this->sharedData->render(['attributes' => ['nonce' => 'HELLOWORLD">', 'data-hello' => 'world']]);
+
+        $expectedHtml = '<script nonce="HELLOWORLD&quot;&gt;" data-hello="world">window["customShareDataNamespace"]={"scalar":"scalar-value","array":{"nested":"value"}};window["sharedDataNamespace"]="customShareDataNamespace";window["customSharedFunctionName"]=function(e){var n=void 0!==arguments[1]?arguments[1]:null;return[window.sharedDataNamespace].concat("string"==typeof e?e.split("."):[]).reduce(function(e,t){return e===n||"object"!=typeof e||void 0===e[t]?n:e[t]},window)};</script>';
+
+        $this->assertSame($expectedHtml, $html);
+    }
+
     public function testToString()
     {
         $this->sharedData->put('foo', 'bar');

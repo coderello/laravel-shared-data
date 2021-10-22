@@ -158,9 +158,17 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         return json_encode($this->get(), $options);
     }
 
-    public function render(): string
+    public function render(array $options = []): string
     {
-        return '<script>'
+        $attributes = $options['attributes'] ?? [];
+
+        $attributeStrings = [];
+
+        foreach ($attributes as $attributeName => $attributeValue) {
+            $attributeStrings[] = $attributeName.'="'.htmlentities($attributeValue, ENT_QUOTES, 'UTF-8', false).'"';
+        }
+
+        return (count($attributeStrings) === 0 ? '<script>' : '<script '.implode(' ', $attributeStrings).'>')
             .'window["'.$this->getJsNamespace().'"]='.$this->toJson().';'
             .'window["sharedDataNamespace"]="'.$this->getJsNamespace().'";'
             .($this->getJsHelperEnabled() ? $this->getJsHelper().';' : '')
