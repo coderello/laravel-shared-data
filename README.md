@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://coderello.com/images/packages/laravel-shared-data.png" width="380" alt="Laravel Shared Data" />
-</p>
+# Laravel Shared Data
 
 ## ✨ Introduction
 
