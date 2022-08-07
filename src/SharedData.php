@@ -200,7 +200,7 @@ class SharedData implements Renderable, Jsonable, Arrayable, JsonSerializable, A
         return Arr::has($this->data, $offset);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
